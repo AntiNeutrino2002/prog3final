@@ -1,0 +1,20 @@
+{
+  "name": "TUMOprog3",
+  "version": "1.0.0",
+  "description": "Data research and visualisation project example for TUMO students",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hanumanum && tumregels",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tumregels/prog3"
+  },
+  "dependencies": {
+    "async-foreach": "^0.1.3",
+    "cheerio": "^1.0.0-rc.2",
+    "request": "^2.81.0"
+  }
+}
