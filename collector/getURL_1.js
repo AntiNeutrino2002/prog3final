@@ -3,12 +3,13 @@ var request = require('request').defaults({
 });
 var cheerio = require('cheerio');
 var fs = require('fs');
-var f = "data/arxiv.json";
+var f = "data/arxiv1.json";
 var site = "https://arxiv.org";
+var date = "/17"
 
 
 if (fs.existsSync(f) && fs.statSync(f).size > 10) {
-    var arxiv = require("./data/arxiv.json");
+    var arxiv = require("./data/arxiv1.json");
 } else {
     fs.appendFile(f, "[]");
     var arxiv = [];
@@ -21,8 +22,9 @@ request.get(site, function(error, response, page) {
 
     for (var i = 0; i < list.length; i++) {
 
-        
-        var fullUrl = site + $(list[i]).attr("href");
+        var linkPart = $(list[i]).attr("href").substr(8);
+
+        var fullUrl = site + "/year" +linkPart + date;
         if (arxiv.indexOf(fullUrl) < 0) {
             arxiv.push(fullUrl);
         }
@@ -30,7 +32,7 @@ request.get(site, function(error, response, page) {
     }
 
     fs.writeFile(f, JSON.stringify(arxiv));
-    console.log(arxiv.length + " հատ հղում կա");
+    console.log(arxiv.length + " categories exist");
     
 });
 
