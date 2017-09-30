@@ -6,7 +6,7 @@ var fs = require('fs');
 var links = require("./data/arxiv1.json");
 var i = 0;
 var f = "data/arxiv2.json";
-var site = "arxiv.org";
+var site = "https://arxiv.org";
 var forEach = require('async-foreach').forEach;
 
 
@@ -16,9 +16,11 @@ if (fs.existsSync(f) && fs.statSync(f).size > 10) {
     fs.appendFile(f, "[]");
     var arxiv = [];
 }
-
+       
 forEach(links, function (link, index, arr) {
+    
     request(link, function(error, response, page){
+ 
         i++;
 		var arxiv2 = getURL(page, link);
 
@@ -29,8 +31,20 @@ forEach(links, function (link, index, arr) {
 
 function getURL (page, current){
 	var data;
-    
+
 	var $ = cheerio.load(page);
+        var countOfArticles = $("#content p");
+    $(countOfArticles).each(function(ii){
+               if (ii == 1){
+                var z = $(this).find("b");
+                $(z).each(function(thr){
+                    if(thr == 0){
+                        countOfArticles = $(this).text();
+                        console.log(countOfArticles);
+                    }
+                })
+               }
+    })
 	var title = $("#content h1").text();
 	var articleList = $("#content ul li a:first-of-type");
      var outerLinks = [];
@@ -44,6 +58,7 @@ function getURL (page, current){
             data = {
             "id" : i,
             "title" : title,
+            "articleCount":countOfArticles,
             "CurrentLink" : current,
             "links" : outerLinks,
             "countOflinks" : j
